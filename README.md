@@ -6,14 +6,22 @@ Easily convert cog based images to a runpod serverless worker.
 
 </div>
 
-## Getting Started
+## 使用方法
 
+### 前提条件
+确保您已经在本地构建好基础镜像，例如：
 ```bash
-git clone https://github.com/runpod-workers/cog-worker.git
-
-cd cog-worker/
-
-docker build --tag user/repo:tag --build-arg COG_REPO=user --build-arg COG_MODEL=model_name --build-arg COG_VERSION=model_version .
-
-docker push user/repo:tag
+docker build -t user/your-base-image:tag /path/to/base/image
 ```
+
+### 构建 Worker 镜像
+使用本地已构建的镜像作为基础镜像：
+```bash
+docker build \
+  --build-arg BASE_IMAGE=user/your-base-image:tag \
+  -t user/cog-worker:latest \
+  .
+```
+
+### 参数说明
+- `BASE_IMAGE`: 本地已构建的基础镜像名称和标签（必需）
