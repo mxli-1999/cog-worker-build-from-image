@@ -27,8 +27,15 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
+      # 注意：使用本地镜像时，需要先确保基础镜像存在
+      # 可以通过以下方式之一准备基础镜像：
+      # 1. docker load -i base-image.tar
+      # 2. docker pull your-registry/base-image:tag
+      # 3. 在前置步骤中构建基础镜像
       - name: Build and push
         uses: docker/build-push-action@v4
         with:
           push: true
           tags: ${{ vars.DOCKERHUB_REPO }}/${{ vars.DOCKERHUB_IMG }}:${{ github.event.release.tag_name }}
+          # build-args: |
+          #   BASE_IMAGE=user/your-base-image:tag
